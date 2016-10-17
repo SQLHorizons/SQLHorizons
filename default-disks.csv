@@ -1,0 +1,6 @@
+﻿id,name,path
+1,System,T:
+2,backup_01,T:\Data_X\backup_01
+3,data_01,T:\Data_X\data_01
+4,tlog_01,T:\Data_X\tlog_01
+5,tempdb_01,T:\Data_X\tempdb_01
