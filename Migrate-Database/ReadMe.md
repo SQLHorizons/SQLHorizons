@@ -3,7 +3,7 @@ Migrate-Database
 A set of functions to help migrate databases from source SQL server to destination SQL server and prepare it for mirroring.
 
 Functions:
-Copy-Database: governing function that implements the process .
+Copy-Database: governing function that implements the process.
 Backup-DatabaseNLog: backup of database & transaction log.
 Restore-DatabaseNLog: uses SMO to restore correct database file format & transaction log.
 Copy-DBUsers: function based on 
