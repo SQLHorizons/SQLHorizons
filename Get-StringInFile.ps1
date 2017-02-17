@@ -1,3 +1,5 @@
+# Function to search a list of computers for a file containing text of chosen type.  Useful for checking ini settings
+
 Function Get-StringInFile
 {
     [CmdletBinding(DefaultParameterSetName = "Default", SupportsShouldProcess = $true)]
