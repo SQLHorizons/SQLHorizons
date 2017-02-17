@@ -1,32 +1,42 @@
-# Function to search a list of computers for a file containing text of chosen type.  Useful for checking ini settings
+#Function to return Restore Script for Backup Source
 
-Function Get-StringInFile
+Function Get-SQLRestoreScript
 {
     [CmdletBinding(DefaultParameterSetName = "Default", SupportsShouldProcess = $true)]
     param
     (
         [parameter(Mandatory = $true, ValueFromPipeline = $true)]
-        [array]$list,
+        [string]$SQLServer,
         [parameter(Mandatory = $true)]
-        [string]$file,
-        [parameter(Mandatory = $true)]
-        [string]$pattern
+        [string]$Path
     )
 
-    foreach($item in $list)
+    if (Get-Module -name 'SQLPS')
     {
-        if(Test-Connection $item -Count 1 -Quiet)
+        $SQLobj   = New-Object -TypeName Microsoft.SqlServer.Management.SMO.Server($SQLServer)
+
+        $BackupDevice = New-Object -TypeName  Microsoft.SqlServer.Management.Smo.BackupDeviceItem ($Path, 'File')
+        $Restore = New-Object -TypeName  Microsoft.SqlServer.Management.Smo.Restore
+
+        $Restore.Devices.Add($BackupDevice)
+        foreach($file in $Restore.ReadFileList($SQLobj))
         {
-            $unc = "\\$item\$file"
-            if($pfm = Get-Content -Path $unc) 
-            {
-                foreach ($line in $pfm) {if ($line -like $pattern){Write-Host "$item, $line"}}
+            $rsfile = New-Object -TypeName  'Microsoft.SqlServer.Management.Smo.RelocateFile, Microsoft.SqlServer.SmoExtended, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91'
+            $rsfile.LogicalFileName = $file.LogicalName
+            switch ($file.FileId) 
+            {   1       {$rsfile.PhysicalFileName = $SQLobj.Settings.DefaultFile + $Database + '_FileId' + $file.FileId + '_Data.mdf'}
+                2       {$rsfile.PhysicalFileName = $SQLobj.Settings.DefaultLog  + $Database + '_FileId' + $file.FileId + '_Log.ldf'}
+                default {$rsfile.PhysicalFileName = $SQLobj.Settings.DefaultFile + $Database + '_FileId' + $file.FileId + '_Data.ndf'}
             }
+            $Restore.RelocateFiles.Add($rsfile)
         }
-        else
-        {
-            Write-Host "$item - OffLine..."
-        }
+
+        Return $Restore
+
+    }
+    else
+    {
+        Throw "Import Module Name 'SQLPS'"
     }
 }
 
