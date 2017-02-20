@@ -11,7 +11,7 @@ Function Get-Assembly
     {
         if($assembly.FullName.Contains($SearchString))
         {
-            $assembly.FullName
+            Return $assembly.FullName
         }
     }
 }
