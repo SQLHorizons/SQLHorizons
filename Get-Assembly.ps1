@@ -17,3 +17,6 @@ Function Get-Assembly
 }
 
 Get-Assembly -SearchString "ConnectionInfoExtended"
+
+Add-Type -AssemblyName $(Get-Assembly -SearchString "ConnectionInfoExtended") -IgnoreWarnings
+Add-Type -AssemblyName $(Get-Assembly -SearchString "ConnectionInfo") -IgnoreWarnings
