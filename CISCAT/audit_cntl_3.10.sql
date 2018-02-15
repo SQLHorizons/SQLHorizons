@@ -1,0 +1,18 @@
+DECLARE @tSQL AS NVARCHAR(MAX)
+
+SELECT @tSQL = 'CREATE TRIGGER [audit_cntl_3.10] ' + CHAR(10)
+SELECT @tSQL = @tSQL + 'ON ALL SERVER ' + CHAR(10)
+SELECT @tSQL = @tSQL + 'FOR DDL_SERVER_LEVEL_EVENTS ' + CHAR(10)
+SELECT @tSQL = @tSQL + 'AS ' + CHAR(10)
+SELECT @tSQL = @tSQL + '    IF EXISTS ( ' + CHAR(10)
+SELECT @tSQL = @tSQL + '    SELECT 1 ' + CHAR(10)
+SELECT @tSQL = @tSQL + '        WHERE ' + CHAR(10)
+SELECT @tSQL = @tSQL + '        EVENTDATA().value(''(/EVENT_INSTANCE/ObjectName)[1]'', ''NVARCHAR(100)'') ' + CHAR(10)
+SELECT @tSQL = @tSQL + '        LIKE ''' + @@SERVERNAME + '%'' ' + CHAR(10)
+SELECT @tSQL = @tSQL + '		AND ' + CHAR(10)
+SELECT @tSQL = @tSQL + '		EVENTDATA().value(''(/EVENT_INSTANCE/EventType)[1]'', ''NVARCHAR(100)'') ' + CHAR(10)
+SELECT @tSQL = @tSQL + '        LIKE ''CREATE%'' ' + CHAR(10)
+SELECT @tSQL = @tSQL + '        ) ' + CHAR(10)
+SELECT @tSQL = @tSQL + '        ROLLBACK; ' + CHAR(10)
+
+EXEC(@tSQL)
