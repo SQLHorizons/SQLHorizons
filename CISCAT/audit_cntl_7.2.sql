@@ -1,0 +1,16 @@
+CREATE TRIGGER [audit_cntl_7.2]
+ON ALL SERVER   
+FOR CREATE_ASYMMETRIC_KEY, ALTER_ASYMMETRIC_KEY   
+AS
+
+DECLARE @CommandText NVARCHAR(MAX)
+SELECT  @CommandText = EVENTDATA().value('(/EVENT_INSTANCE/TSQLCommand/CommandText)[1]', 'NVARCHAR(MAX)')
+
+    IF EXISTS (
+	SELECT 1
+		WHERE
+		SUBSTRING(@CommandText, PATINDEX('%ALGORITHM = %', @CommandText) +12, 8)
+		IN ('RSA_1024','RSA_512')
+    )
+    ROLLBACK;
+    
