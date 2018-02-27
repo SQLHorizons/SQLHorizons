@@ -1,15 +1,12 @@
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 Import-Module -Name 'SQLPS' -DisableNameChecking
 
-$audit_cntl = "audit_cntl_2.1"
-
 $srv = New-Object Microsoft.SqlServer.Management.Smo.Server("(local)")
-$trg = New-Object Microsoft.SqlServer.Management.Smo.ServerDdlTrigger($srv, $audit_cntl)
+$trg = New-Object Microsoft.SqlServer.Management.Smo.ServerDdlTrigger($srv, "audit_cntl_2.1")
 
 $trg.TextHeader = "
-CREATE TRIGGER [$audit_cntl]
-ON ALL SERVER   
-FOR DDL_SERVER_LEVEL_EVENTS   
+CREATE TRIGGER [audit_cntl_2.1]
+ON ALL SERVER
+FOR DDL_SERVER_LEVEL_EVENTS
 AS"
 
 $trg.TextBody   = "
@@ -28,5 +25,3 @@ $trg.TextBody   = "
 
 ##  apply audit_cntl_2.1 trigger.
 $trg.Create()
-
-#$trg.Drop()
