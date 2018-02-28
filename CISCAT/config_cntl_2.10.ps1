@@ -8,8 +8,6 @@ $srvobj = New-Object -TypeName Microsoft.SqlServer.Management.SMO.Wmi.ManagedCom
 foreach($ClientProtocol in $srvobj.ClientProtocols){
     $protocol = $srvobj.GetSmoObject($ClientProtocol.Urn.Value.Replace("/Client","/ServerInstance[@Name='MSSQLSERVER']/Server"))
 
-    
-
     if($protocol.Name -iin ("sm","tcp")){
         $protocol.IsEnabled = $true
     }
