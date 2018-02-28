@@ -1,9 +1,14 @@
 
+$WmiObject = @{
+    Namespace = "root\Microsoft\SqlServer\ComputerManagement14"
+    Class     = "ServerSettingsGeneralFlag"
+}
+$ServerSettingsGeneralFlag = Get-WmiObject @WmiObject
 
-DECLARE @getValue INT;
- EXEC master..xp_instance_regread
- @rootkey = N'HKEY_LOCAL_MACHINE',
- @key = N'SOFTWARE\Microsoft\Microsoft SQL Server\MSSQLServer\SuperSocketNetLib',
- @value_name = N'ForceEncryption',
- @value = @getValue OUTPUT;
- SELECT @getValue;
+foreach($setting in $ServerSettingsGeneralFlag){
+    $setting.SetValue($true) | Out-Null
+}
+
+if((Get-Service -Name MSSQLSERVER).Status -eq "Running"){
+    Restart-Service -Name MSSQLSERVER
+}
