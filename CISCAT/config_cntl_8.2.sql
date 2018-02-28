@@ -1,4 +1,6 @@
 
+##  apply config_cntl_8.1
+
 $WmiObject = @{
     Namespace = "root\Microsoft\SqlServer\ComputerManagement14"
     Class     = "ServerSettingsGeneralFlag"
