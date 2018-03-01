@@ -1,16 +1,14 @@
-
-##  apply config_cntl_8.1
-
+##  apply config_cntl_8.2
 $WmiObject = @{
     Namespace = "root\Microsoft\SqlServer\ComputerManagement14"
     Class     = "ServerSettingsGeneralFlag"
 }
-$ServerSettingsGeneralFlag = Get-WmiObject @WmiObject
+$ServerSettingsGeneralFlag = Get-WmiObject @WmiObject | Where-Object {$_.FlagName -eq "ForceEncryption"}
 
-foreach($setting in $ServerSettingsGeneralFlag){
-    $setting.SetValue($true) | Out-Null
-}
+if($ServerSettingsGeneralFlag.FlagValue -eq $false){
+    $ServerSettingsGeneralFlag.SetValue($true) | Out-Null
 
-if((Get-Service -Name MSSQLSERVER).Status -eq "Running"){
-    Restart-Service -Name MSSQLSERVER
+    if((Get-Service -Name MSSQLSERVER).Status -eq "Running"){
+        Restart-Service -Name MSSQLSERVER
+    }
 }
