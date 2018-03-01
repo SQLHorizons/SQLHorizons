@@ -8,7 +8,8 @@ Import-Module AWSPowerShell, SQLPS -DisableNameChecking -ErrorAction Stop
 
 $SQLsrv = New-Object Microsoft.SqlServer.Management.Smo.Server($server)
 
-##  apply audit_cntl_2.2 trigger.
+#######################  apply  audit_cntl_2.2 trigger  #######################
+
 $trigger = "audit_cntl_2.2"
 $SQLsrv.Refresh()
 
