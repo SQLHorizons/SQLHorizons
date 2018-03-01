@@ -1,32 +1,43 @@
-Import-Module -Name 'SQLPS' -DisableNameChecking
+##  Input parameters?
+param(
+    [string]$server = "(local)"
+)
 
-$SQLsrv = New-Object Microsoft.SqlServer.Management.Smo.Server("(local)")
+##  Load dependent modules.
+Import-Module AWSPowerShell, SQLPS -DisableNameChecking -ErrorAction Stop
 
-##  apply audit_cntl_2.2 trigger.
-$trigger = New-Object Microsoft.SqlServer.Management.Smo.ServerDdlTrigger
-$trigger.Parent = $SQLsrv
-$trigger.Name = "audit_cntl_2.2"
+$SQLsrv = New-Object Microsoft.SqlServer.Management.Smo.Server($server)
 
-$trigger.TextHeader = "
-CREATE TRIGGER [audit_cntl_2.2]
-ON ALL SERVER
-FOR DDL_SERVER_LEVEL_EVENTS
-AS"
+##  apply audit_cntl_2.1 trigger.
+$trigger = "audit_cntl_2.2"
+$SQLsrv.Refresh()
 
-$trigger.TextBody   = "
+if(!($SQLsrv.Triggers.Item($trigger))){
+    $trg = New-Object Microsoft.SqlServer.Management.Smo.ServerDdlTrigger
+    $trg.Parent = $SQLsrv
+    $trg.Name = $trigger
 
-IF EXISTS (
-SELECT 1
-  WHERE
-  EVENTDATA().value('(/EVENT_INSTANCE/PropertyName)[1]', 'NVARCHAR(MAX)')
-  = 'Ad Hoc Distributed Queries'
-  AND
-  EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]', 'NVARCHAR(MAX)')
-  = 1
-  )
-  ROLLBACK;
-"
+    $trg.TextHeader = "
+    CREATE TRIGGER [$trigger]
+    ON ALL SERVER
+    FOR DDL_SERVER_LEVEL_EVENTS
+    AS"
 
-$trigger.Create()
+    $trg.TextBody = "
 
-Clear-Variable trigger
+    IF EXISTS (
+    SELECT 1
+      WHERE
+      EVENTDATA().value('(/EVENT_INSTANCE/PropertyName)[1]','NVARCHAR(MAX)')
+      = 'clr enabled'
+      AND
+      EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]','NVARCHAR(MAX)')
+      = 1
+      )
+      ROLLBACK;
+    "
+
+    $trg.Create()
+
+    Clear-Variable trg
+}
