@@ -1,12 +1,19 @@
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
+##  Input parameters?
+param(
+    [string]$server = "(local)"
+)
 
-Import-Module -Name 'SQLPS' -DisableNameChecking
+##  Load dependent modules.
+Import-Module AWSPowerShell, SQLPS -DisableNameChecking -ErrorAction Stop
 
-$SQLServer = $env:COMPUTERNAME 
-$srvobj = New-Object -TypeName Microsoft.SqlServer.Management.SMO.Wmi.ManagedComputer($SQLServer)
+#####################  apply:  config_cntl_2.10 settings  #####################
 
-foreach($ClientProtocol in $srvobj.ClientProtocols){
-    $protocol = $srvobj.GetSmoObject($ClientProtocol.Urn.Value.Replace("/Client","/ServerInstance[@Name='MSSQLSERVER']/Server"))
+$WMI=New-Object Microsoft.SqlServer.Management.SMO.Wmi.ManagedComputer($server)
+
+foreach($cp in $WMI.ClientProtocols){
+    $ServerInstance = "/ServerInstance[@Name='MSSQLSERVER']/Server"
+    $urn = $cp.Urn.Value.Replace("/Client",$ServerInstance)
+    $protocol = $WMI.GetSmoObject($urn)
 
     if($protocol.Name -iin ("sm","tcp")){
         $protocol.IsEnabled = $true
