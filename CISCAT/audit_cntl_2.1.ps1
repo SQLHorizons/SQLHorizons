@@ -1,27 +1,32 @@
 Import-Module -Name 'SQLPS' -DisableNameChecking
 
-$srv = New-Object Microsoft.SqlServer.Management.Smo.Server("(local)")
-$trg = New-Object Microsoft.SqlServer.Management.Smo.ServerDdlTrigger($srv, "audit_cntl_2.1")
+$SQLsrv = New-Object Microsoft.SqlServer.Management.Smo.Server("(local)")
 
-$trg.TextHeader = "
+##  apply audit_cntl_2.1 trigger.
+$trigger = New-Object Microsoft.SqlServer.Management.Smo.ServerDdlTrigger
+$trigger.Parent = $SQLsrv
+$trigger.Name = "audit_cntl_2.1"
+
+$trigger.TextHeader = "
 CREATE TRIGGER [audit_cntl_2.1]
 ON ALL SERVER
 FOR DDL_SERVER_LEVEL_EVENTS
 AS"
 
-$trg.TextBody   = "
+$trigger.TextBody   = "
 
-    IF EXISTS (
-    SELECT 1
-        WHERE
-        EVENTDATA().value('(/EVENT_INSTANCE/PropertyName)[1]', 'NVARCHAR(MAX)')
-        = 'Ad Hoc Distributed Queries'
-        AND
-        EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]', 'NVARCHAR(MAX)')
-        = 1
-        )
-        ROLLBACK;
+IF EXISTS (
+SELECT 1
+  WHERE
+  EVENTDATA().value('(/EVENT_INSTANCE/PropertyName)[1]', 'NVARCHAR(MAX)')
+  = 'Ad Hoc Distributed Queries'
+  AND
+  EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]', 'NVARCHAR(MAX)')
+  = 1
+  )
+  ROLLBACK;
 "
 
-##  apply audit_cntl_2.1 trigger.
-$trg.Create()
+$trigger.Create()
+
+Clear-Variable trigger
