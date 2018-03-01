@@ -16,7 +16,8 @@
 
 ##############################################################################>
 
-Import-Module SQLPS -DisableNameChecking
+##  Load dependent modules.
+Import-Module AWSPowerShell, SQLPS -DisableNameChecking -ErrorAction Stop
 
 $SQLServer     = New-Object -TypeName  Microsoft.SqlServer.Management.SMO.Server($env:COMPUTERNAME)
 
