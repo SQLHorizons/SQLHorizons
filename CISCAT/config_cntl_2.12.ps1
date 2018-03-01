@@ -1,9 +1,17 @@
-##  apply config_cntl_2.12
+##  Input parameters?
+param(
+    [string]$server = $env:COMPUTERNAME
+)
+
+#####################  apply:  config_cntl_2.12 settings  #####################
+
 $WmiObject = @{
-    Namespace = "root\Microsoft\SqlServer\ComputerManagement14"
-    Class     = "ServerSettingsGeneralFlag"
+    ComputerName = $server
+    Namespace    = "root\Microsoft\SqlServer\ComputerManagement14"
+    Class        = "ServerSettingsGeneralFlag"
 }
-$ServerSettingsGeneralFlag = Get-WmiObject @WmiObject | Where-Object {$_.FlagName -eq "HideInstance"}
+$ServerSettingsGeneralFlag = Get-WmiObject @WmiObject |
+    Where-Object {$_.FlagName -eq "HideInstance"}
 
 if($ServerSettingsGeneralFlag.FlagValue -eq $false){
     $ServerSettingsGeneralFlag.SetValue($true) | Out-Null
