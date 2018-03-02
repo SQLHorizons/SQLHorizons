@@ -8,9 +8,9 @@ Import-Module AWSPowerShell, SQLPS -DisableNameChecking -ErrorAction Stop
 
 $SQLsrv = New-Object Microsoft.SqlServer.Management.Smo.Server($server)
 
-#######################  apply  audit_cntl_2.1 trigger  #######################
+#######################  apply: audit_cntl_2.9 trigger  #######################
 
-$trigger = $step = "audit_cntl_2.1"
+$trigger = $step = "audit_cntl_2.9"
 $SQLsrv.Refresh()
 
 if(!($SQLsrv.Triggers.Item($trigger))){
@@ -21,7 +21,7 @@ if(!($SQLsrv.Triggers.Item($trigger))){
     $trg.TextHeader = "
     CREATE TRIGGER [$trigger]
     ON ALL SERVER
-    FOR DDL_SERVER_LEVEL_EVENTS
+    FOR ALTER_DATABASE
     AS"
 
     $trg.TextBody = "
@@ -29,11 +29,8 @@ if(!($SQLsrv.Triggers.Item($trigger))){
     IF EXISTS (
     SELECT 1
       WHERE
-      EVENTDATA().value('(/EVENT_INSTANCE/PropertyName)[1]','NVARCHAR(MAX)')
-      = 'Ad Hoc Distributed Queries'
-      AND
-      EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]','NVARCHAR(MAX)')
-      = 1
+      EVENTDATA().value('(/EVENT_INSTANCE/TSQLCommand/CommandText)[1]','NVARCHAR(100)')
+      like '% SET TRUSTWORTHY ON'
       )
       ROLLBACK;
     "

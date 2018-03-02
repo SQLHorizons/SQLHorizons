@@ -8,9 +8,9 @@ Import-Module AWSPowerShell, SQLPS -DisableNameChecking -ErrorAction Stop
 
 $SQLsrv = New-Object Microsoft.SqlServer.Management.Smo.Server($server)
 
-#######################  apply  audit_cntl_2.1 trigger  #######################
+#######################  apply: audit_cntl_2.7 trigger  #######################
 
-$trigger = $step = "audit_cntl_2.1"
+$trigger = $step = "audit_cntl_2.7"
 $SQLsrv.Refresh()
 
 if(!($SQLsrv.Triggers.Item($trigger))){
@@ -30,7 +30,7 @@ if(!($SQLsrv.Triggers.Item($trigger))){
     SELECT 1
       WHERE
       EVENTDATA().value('(/EVENT_INSTANCE/PropertyName)[1]','NVARCHAR(MAX)')
-      = 'Ad Hoc Distributed Queries'
+      = 'remote admin connections'
       AND
       EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]','NVARCHAR(MAX)')
       = 1

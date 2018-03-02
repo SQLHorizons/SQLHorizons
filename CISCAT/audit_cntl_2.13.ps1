@@ -1,4 +1,4 @@
-##  Input parameters?
+﻿##  Input parameters?
 param(
     [string]$server = $env:COMPUTERNAME
 )
@@ -8,9 +8,9 @@ Import-Module AWSPowerShell, SQLPS -DisableNameChecking -ErrorAction Stop
 
 $SQLsrv = New-Object Microsoft.SqlServer.Management.Smo.Server($server)
 
-#######################  apply: audit_cntl_2.13 trigger  #######################
+######################  apply:  audit_cntl_2.13 trigger  ######################
 
-$trigger = "audit_cntl_2.13"
+$trigger = $step = "audit_cntl_2.13"
 $SQLsrv.Refresh()
 
 if(!($SQLsrv.Triggers.Item($trigger))){
@@ -42,6 +42,6 @@ if(!($SQLsrv.Triggers.Item($trigger))){
     "
 
     $trg.Create()
-
-    Clear-Variable trg
+    Write-Host "Deployed control: $step"
+    Clear-Variable trg, step
 }

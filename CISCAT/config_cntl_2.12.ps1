@@ -1,4 +1,4 @@
-##  Input parameters?
+﻿##  Input parameters?
 param(
     [string]$server = $env:COMPUTERNAME
 )

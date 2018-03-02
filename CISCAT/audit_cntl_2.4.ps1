@@ -1,6 +1,6 @@
-##  Input parameters?
+﻿##  Input parameters?
 param(
-    [string]$server = "(local)"
+    [string]$server = $env:COMPUTERNAME
 )
 
 ##  Load dependent modules.
@@ -10,7 +10,7 @@ $SQLsrv = New-Object Microsoft.SqlServer.Management.Smo.Server($server)
 
 #######################  apply: audit_cntl_2.4 trigger  #######################
 
-$trigger = "audit_cntl_2.4"
+$trigger = $step = "audit_cntl_2.4"
 $SQLsrv.Refresh()
 
 if(!($SQLsrv.Triggers.Item($trigger))){
@@ -39,6 +39,6 @@ if(!($SQLsrv.Triggers.Item($trigger))){
     "
 
     $trg.Create()
-
-    Clear-Variable trg
+    Write-Host "Deployed control: $step"
+    Clear-Variable trg, step
 }
