@@ -8,9 +8,9 @@ Import-Module AWSPowerShell, SQLPS -DisableNameChecking -ErrorAction Stop
 
 $SQLsrv = New-Object Microsoft.SqlServer.Management.Smo.Server($server)
 
-#######################  apply  audit_cntl_2.2 trigger  #######################
+#######################  apply  audit_cntl_3.2 trigger  #######################
 
-$trigger = $step = "audit_cntl_2.2"
+$trigger = $step = "audit_cntl_3.2"
 $SQLsrv.Refresh()
 
 if(!($SQLsrv.Triggers.Item($trigger))){
@@ -21,7 +21,7 @@ if(!($SQLsrv.Triggers.Item($trigger))){
     $trg.TextHeader = "
     CREATE TRIGGER [$trigger]
     ON ALL SERVER
-    FOR DDL_SERVER_LEVEL_EVENTS
+    FOR GRANT_DATABASE
     AS"
 
     $trg.TextBody = "
@@ -29,11 +29,11 @@ if(!($SQLsrv.Triggers.Item($trigger))){
     IF EXISTS (
     SELECT 1
       WHERE
-      EVENTDATA().value('(/EVENT_INSTANCE/PropertyName)[1]','NVARCHAR(MAX)')
-      = 'clr enabled'
+      EVENTDATA().value('(/EVENT_INSTANCE/Grantees/Grantee)[1]','NVARCHAR(MAX)')
+      = 'guest'
       AND
-      EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]','NVARCHAR(MAX)')
-      = 1
+      EVENTDATA().value('(/EVENT_INSTANCE/Permissions/Permission)[1]','NVARCHAR(MAX)')
+      = 'connect'
       )
       ROLLBACK;
     "

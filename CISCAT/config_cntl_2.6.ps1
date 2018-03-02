@@ -1,6 +1,6 @@
 ﻿##  Input parameters?
 param(
-    [string]$server = "(local)"
+    [string]$server = $env:COMPUTERNAME
 )
 
 ##  Load dependent modules.

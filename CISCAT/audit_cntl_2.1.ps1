@@ -39,6 +39,6 @@ if(!($SQLsrv.Triggers.Item($trigger))){
     "
 
     $trg.Create()
-    Write-Host "Deployed control: $step"
+    Write-Host "Deployed control: $step."
     Clear-Variable trg, step
 }

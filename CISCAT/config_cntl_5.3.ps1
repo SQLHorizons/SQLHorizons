@@ -1,9 +1,22 @@
-Import-Module SQLPS -DisableNameChecking
- 
-$SQLServer     = New-Object -TypeName  Microsoft.SqlServer.Management.SMO.Server($env:COMPUTERNAME)
- 
-##  apply config_cntl_5.3
-if($SQLServer.AuditLevel -ne "All"){
-    $SQLServer.AuditLevel = "All"
-    $SQLServer.Alter()
+﻿##  Input parameters?
+param(
+    [string]$server = $env:COMPUTERNAME
+)
+
+##  Load dependent modules.
+Import-Module AWSPowerShell, SQLPS -DisableNameChecking -ErrorAction Stop
+
+$SQLsrv = New-Object Microsoft.SqlServer.Management.Smo.Server($server)
+
+######################  apply: config_cntl_5.3 settings  ######################
+
+$step = "config_cntl_5.3"
+$SQLsrv.Refresh()
+
+if($SQLsrv.AuditLevel -ne "None"){
+    $SQLsrv.AuditLevel = "None"
+    $SQLsrv.Alter()
+    Write-Host "Configured control: $step."
 }
+
+Clear-Variable step

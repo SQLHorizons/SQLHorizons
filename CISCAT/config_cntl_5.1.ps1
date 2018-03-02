@@ -1,10 +1,22 @@
+﻿##  Input parameters?
+param(
+    [string]$server = $env:COMPUTERNAME
+)
 
-Import-Module SQLPS -DisableNameChecking
- 
-$SQLServer     = New-Object -TypeName  Microsoft.SqlServer.Management.SMO.Server($env:COMPUTERNAME)
- 
-##  apply config_cntl_5.1
-if($SQLServer.NumberOfLogFiles -ne 12){
-    $SQLServer.NumberOfLogFiles = 12
-    $SQLServer.Alter()
+##  Load dependent modules.
+Import-Module AWSPowerShell, SQLPS -DisableNameChecking -ErrorAction Stop
+
+$SQLsrv = New-Object Microsoft.SqlServer.Management.Smo.Server($server)
+
+######################  apply: config_cntl_5.1 settings  ######################
+
+$step = "config_cntl_5.1"
+$SQLsrv.Refresh()
+
+if($SQLsrv.NumberOfLogFiles -ne 12){
+    $SQLsrv.NumberOfLogFiles = 12
+    $SQLsrv.Alter()
+    Write-Host "Configured control: $step."
 }
+
+Clear-Variable step
