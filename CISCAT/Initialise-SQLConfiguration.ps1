@@ -34,7 +34,7 @@ $ErrorActionPreference = "Stop"
 
 Try{
     ##  Load dependent modules.
-    Import-Module AWSPowerShell, SQLPS -DisableNameChecking -ErrorAction Stop
+    Import-Module SQLPS -DisableNameChecking -ErrorAction Stop
 
     $SQLsrv = New-Object Microsoft.SqlServer.Management.Smo.Server($server)
 
@@ -65,7 +65,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]','NVARCHAR(MAX)')
           = 1
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -100,7 +103,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]','NVARCHAR(MAX)')
           = 1
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -135,7 +141,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]','NVARCHAR(MAX)')
           = 1
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -170,7 +179,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]','NVARCHAR(MAX)')
           = 1
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -205,7 +217,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]','NVARCHAR(MAX)')
           = 1
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -255,7 +270,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]','NVARCHAR(MAX)')
           = 1
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -290,7 +308,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]','NVARCHAR(MAX)')
           = 1
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -325,7 +346,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]','NVARCHAR(MAX)')
           = 1
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -357,7 +381,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/TSQLCommand/CommandText)[1]','NVARCHAR(100)')
           like '% SET TRUSTWORTHY ON'
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -442,7 +469,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/TSQLCommand/CommandText)[1]','NVARCHAR(MAX)')
           LIKE '%ENABLE%'
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -481,7 +511,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]','NVARCHAR(MAX)')
           = 1
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -513,7 +546,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/TSQLCommand/CommandText)[1]','NVARCHAR(MAX)')
           like '% AUTO_CLOSE ON %'
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -548,7 +584,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/ObjectName)[1]','NVARCHAR(MAX)')
           LIKE 'sa'
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -583,7 +622,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/Permissions/Permission)[1]','NVARCHAR(MAX)')
           = 'connect'
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -618,7 +660,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]','NVARCHAR(MAX)')
           = 1
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -650,7 +695,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/Grantees/Grantee)[1]','NVARCHAR(MAX)')
           = 'public'
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -685,7 +733,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/EventType)[1]','NVARCHAR(MAX)')
           LIKE 'CREATE%'
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -720,7 +771,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/EventType)[1]','NVARCHAR(MAX)') 
           LIKE 'CREATE%' 
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -758,7 +812,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/RoleName)[1]','NVARCHAR(MAX)')
           = 'sysadmin'
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -790,7 +847,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/TSQLCommand/CommandText)[1]','NVARCHAR(MAX)')
           LIKE '%CHECK_POLICY=OFF%'
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -838,7 +898,10 @@ Try{
           EVENTDATA().value('(/EVENT_INSTANCE/PropertyValue)[1]','NVARCHAR(MAX)')
           = 0
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -880,7 +943,7 @@ Try{
         ## Set audit specification properties.
         $spc = New-Object Microsoft.SqlServer.Management.Smo.ServerAuditSpecification
         $spc.Parent = $SQLsrv
-        $spc.Name = $Audit.Replace('.', '.specification.')
+        $spc.Name = $Audit.Replace('log', 'specification')
         $spc.AuditName = $adt.Name
 
         ## Set audit events.
@@ -913,6 +976,7 @@ Try{
         $trg = New-Object Microsoft.SqlServer.Management.Smo.ServerDdlTrigger
         $trg.Parent = $SQLsrv
         $trg.Name = $trigger
+        $trg.IsEnabled = $false
 
         $trg.TextHeader = "
         CREATE TRIGGER [$trigger]
@@ -929,9 +993,12 @@ Try{
         SELECT 1
           WHERE
           SUBSTRING(@CommandText, PATINDEX('%ALGORITHM = %', @CommandText) +12, 7)
-          NOT IN ('AES_128','AES_192','AES_256')
+          IN ('DES','TRIPLE_DES','TRIPLE_DES_3KEY','RC2','RC4','RC4_128','DESX')
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -966,7 +1033,10 @@ Try{
           SUBSTRING(@CommandText, PATINDEX('%ALGORITHM = %', @CommandText) +12, 8)
           IN ('RSA_1024','RSA_512')
           )
-          ROLLBACK;
+          BEGIN
+            ROLLBACK
+            PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+          END;
         "
 
         $trg.Create()
@@ -1008,7 +1078,46 @@ Try{
 
 ######################  apply:  config_cntl_8.4 setting  ######################
 
+    $Audit = $step = "privileged.user.access.log"
+    $SQLsrv.Refresh()
 
+    if(!($SQLsrv.Audits.Item($Audit))){
+        $adt = New-Object Microsoft.SqlServer.Management.Smo.Audit
+        $adt.Parent = $SQLsrv
+        $adt.Name = $Audit
+
+        $adt.DestinationType = [Microsoft.SqlServer.Management.Smo.AuditDestinationType]::File
+        $adt.FilePath = $SQLsrv.ErrorLogPath
+        $adt.MaximumRolloverFiles = 1
+        $adt.MaximumFileSize = 500
+        $adt.ReserveDiskSpace = $true
+
+        $adt.Create()
+
+        ## Set audit specification properties.
+        $spc = New-Object Microsoft.SqlServer.Management.Smo.ServerAuditSpecification
+        $spc.Parent = $SQLsrv
+        $spc.Name = $Audit.Replace('log', 'specification')
+        $spc.AuditName = $adt.Name
+
+        ## Set audit events.
+        $events  = "AuditChangeGroup","LoginChangePasswordGroup","ServerPrincipalChangeGroup"
+        $events += "ServerRoleMemberChangeGroup","UserChangePasswordGroup"
+        $events += "ServerPermissionChangeGroup","ServerObjectPermissionChangeGroup"
+
+        foreach($asd in $events){
+            $act = New-Object Microsoft.SqlServer.Management.Smo.AuditSpecificationDetail($asd)
+            $spc.AddAuditSpecificationDetail($act)
+        }
+
+        ## Create and enable audit specification.
+        $spc.Create()
+        $spc.Enable()
+        $adt.Enable()
+
+        Write-Host "Configured and deployed control: $step."
+        Clear-Variable adt, step
+    }
 
 ######################  apply:  config_cntl_8.5 setting  ######################
 
@@ -1027,6 +1136,17 @@ Catch{
     Break
 }
 Finally{
+
+    ##  enable triggers.
+    $SQLsrv.Refresh()
+    foreach($trg in $SQLsrv.Triggers){
+        if(!($trg.IsEnabled)){
+            Write-Host "Enabling DDL trigger: $($trg.Name)."
+            $trg.IsEnabled = $true
+            $trg.Alter()
+        }
+    }
+
     if($RestartService){
         Restart-Service -Name MSSQLSERVER -ErrorAction SilentlyContinue
     }

@@ -14,6 +14,13 @@ $Audit = $step = "privileged.user.access.log"
 $SQLsrv.Refresh()
 
 if(!($SQLsrv.Audits.Item($Audit))){
+    
+    $t= $SQLsrv.Triggers.Item("audit_cntl_7.1")
+    if($t.IsEnabled){
+        $t.IsEnabled = $false
+        $t.Alter()
+    }
+
     $adt = New-Object Microsoft.SqlServer.Management.Smo.Audit
     $adt.Parent = $SQLsrv
     $adt.Name = $Audit
@@ -43,11 +50,12 @@ if(!($SQLsrv.Audits.Item($Audit))){
     }
 
     ## Create and enable audit specification.
-    $spc.Script()
-    #$spc.Create()
-    #$spc.Enable()
-    #$adt.Enable()
+    $spc.Create()
+    $spc.Enable()
+    $adt.Enable()
 
     Write-Host "Configured and deployed control: $step."
+    $t.IsEnabled = $true
+    $t.Alter()
     Clear-Variable adt, step
 }

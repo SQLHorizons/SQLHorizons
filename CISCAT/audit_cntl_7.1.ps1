@@ -17,6 +17,7 @@ if(!($SQLsrv.Triggers.Item($trigger))){
     $trg = New-Object Microsoft.SqlServer.Management.Smo.ServerDdlTrigger
     $trg.Parent = $SQLsrv
     $trg.Name = $trigger
+    $trg.IsEnabled = $false
 
     $trg.TextHeader = "
     CREATE TRIGGER [$trigger]
@@ -33,9 +34,12 @@ if(!($SQLsrv.Triggers.Item($trigger))){
     SELECT 1
       WHERE
       SUBSTRING(@CommandText, PATINDEX('%ALGORITHM = %', @CommandText) +12, 7)
-      NOT IN ('AES_128','AES_192','AES_256')
+      IN ('DES','TRIPLE_DES','TRIPLE_DES_3KEY','RC2','RC4','RC4_128','DESX')
       )
-      ROLLBACK;
+      BEGIN
+        ROLLBACK
+        PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+      END;
     "
 
     $trg.Create()

@@ -17,6 +17,7 @@ if(!($SQLsrv.Triggers.Item($trigger))){
     $trg = New-Object Microsoft.SqlServer.Management.Smo.ServerDdlTrigger
     $trg.Parent = $SQLsrv
     $trg.Name = $trigger
+    $trg.IsEnabled = $false
 
     $trg.TextHeader = "
     CREATE TRIGGER [$trigger]
@@ -35,7 +36,10 @@ if(!($SQLsrv.Triggers.Item($trigger))){
       SUBSTRING(@CommandText, PATINDEX('%ALGORITHM = %', @CommandText) +12, 8)
       IN ('RSA_1024','RSA_512')
       )
-      ROLLBACK;
+      BEGIN
+        ROLLBACK
+        PRINT 'The transaction ended in the trigger $trigger. The batch has been aborted.'
+      END;
     "
 
     $trg.Create()
