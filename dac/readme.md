@@ -39,5 +39,12 @@ $dr = $DACsrv.Register($trgDBName, $appName, $appVersion, $appDesc)
 --------------------------------------------------------------------------
 
 ```powershell
+##  extract the DAC.
+$fileName   = "$env:HOMEPATH\.dacpac\SQLOps\SQLOps.dacpac"
+$trgDBName  = "SQLOps"
+$appName    = "SQLOps"
+$appVersion = $([System.Version]"1.0.0.0")
+
+$de = $DACsrv.Extract($fileName, $trgDBName, $appName, $appVersion)
 ```
 
