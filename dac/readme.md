@@ -19,7 +19,7 @@ Add-Type -Path $dac
 ##  get DAC server object.
 $conStr  = "server=$server;";
 $conStr += "User ID=sa;Password=$password;";
-$DACsrv = New-Object Microsoft.SqlServer.Dac.DacServices($conStr)
+$DACsrv  = New-Object Microsoft.SqlServer.Dac.DacServices($conStr)
 ````
 
 [DacServices.Register Method](https://msdn.microsoft.com/en-us/library/microsoft.sqlserver.dac.dacservices.register(v=sql.120).aspx#Anchor_3)
