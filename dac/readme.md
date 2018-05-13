@@ -1,7 +1,7 @@
 [Data-tier Applications](https://docs.microsoft.com/en-us/sql/relational-databases/data-tier-applications/data-tier-applications?view=sql-server-2017)
-=========================================================================
+==========================================================================
 
-Managing DAC with PowerShell
+Managing DAC with PowerShell.
 
 [Import DACFx Reference](https://msdn.microsoft.com/library/dn645454.aspx)
 --------------------------------------------------------------------------
@@ -13,10 +13,24 @@ Add-Type -Path $dac
 ````
 
 [Connecting DacServices](https://msdn.microsoft.com/en-gb/library/microsoft.sqlserver.dac.dacservices.aspx)
+--------------------------------------------------------------------------
 
 ```powershell
 ##  get DAC server object.
 $conStr  = "server=$server;";
 $conStr += "User ID=sa;Password=$password;";
 $DACsrv = New-Object Microsoft.SqlServer.Dac.DacServices($conStr)
+````
+
+[DacServices.Register Method](https://msdn.microsoft.com/en-us/library/microsoft.sqlserver.dac.dacservices.register(v=sql.120).aspx#Anchor_3)
+--------------------------------------------------------------------------
+
+```powershell
+##  Register the DAC.
+$trgDBName  = "MasterSQLPlus"
+$appName    = "MasterSQLPlus"
+$appVersion = $([System.Version]"1.0.0.0")
+$appDesc    = ""
+
+$dr = $DACsrv.Register($trgDBName, $appName, $appVersion, $appDesc)
 ````
