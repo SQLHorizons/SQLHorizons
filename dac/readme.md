@@ -34,3 +34,10 @@ $appDesc    = ""
 
 $dr = $DACsrv.Register($trgDBName, $appName, $appVersion, $appDesc)
 ````
+
+[DacServices.Extract Method](https://msdn.microsoft.com/en-gb/library/microsoft.sqlserver.dac.dacservices.extract.aspx)
+--------------------------------------------------------------------------
+
+```powershell
+```
+
