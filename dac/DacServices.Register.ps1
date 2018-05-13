@@ -1,3 +1,6 @@
+
+###################  DacServices.Register Method Variables  ###################
+
 $targetDatabaseName = @{
     Name        = "trgDBName"
     Description = "The name of the database for which to add registration information."
@@ -25,12 +28,5 @@ $applicationDescription = @{
     Value       = ""
 }
 Set-Variable @applicationDescription
-
-###################  DacServices.Register Method Variables  ###################
-
-$trgDBName.GetType()
-$appName.GetType()
-$appVersion.GetType()
-$appDesc.GetType()
 
 ####################################  END  ####################################
