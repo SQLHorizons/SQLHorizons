@@ -26,7 +26,7 @@ $DACsrv  = New-Object Microsoft.SqlServer.Dac.DacServices($conStr)
 --------------------------------------------------------------------------
 
 ```powershell
-##  Register the DAC.
+##  register the DAC.
 $trgDBName  = "MasterSQLPlus"
 $appName    = "MasterSQLPlus"
 $appVersion = $([System.Version]"1.0.0.0")
