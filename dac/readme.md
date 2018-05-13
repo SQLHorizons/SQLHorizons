@@ -25,7 +25,7 @@ $DACsrv  = New-Object Microsoft.SqlServer.Dac.DacServices($conStr)
 [DacServices.Register Method](https://msdn.microsoft.com/en-us/library/microsoft.sqlserver.dac.dacservices.register(v=sql.120).aspx#Anchor_3)
 --------------------------------------------------------------------------
 
-[n](https://github.com/SQLHorizons/SQLHorizons/blob/master/dac/DacServices.Register.ps1)
+[.\Register.variables.ps1](https://github.com/SQLHorizons/SQLHorizons/blob/master/dac/Register.variables.ps1)
 
 ```powershell
 ##  register the DAC.
